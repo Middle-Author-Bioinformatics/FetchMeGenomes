@@ -6,10 +6,10 @@ from Bio import SeqIO
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Summarize BLAST output with peptide and subject info.")
-    parser.add_argument("-b", "--blast", required=True, help="BLAST output file (outfmt 6)")
-    parser.add_argument("-f", "--fasta", required=True, help="FASTA file of peptide query sequences")
-    parser.add_argument("-db", "--database", required=True, help="FASTA database used in BLAST (contains subject sequences)")
-    parser.add_argument("-o", "--output", required=True, help="Output CSV file")
+    parser.add_argument("-n", "--ncbi", required=True, help="BLAST output file (outfmt 6)")
+    parser.add_argument("-g", "--genera", required=True, help="FASTA file of peptide query sequences")
+    parser.add_argument("-s", "--species", required=True, help="FASTA database used in BLAST (contains subject sequences)")
+    parser.add_argument("-t", "--strain", required=True, help="Output CSV file")
     return parser.parse_args()
 
 def load_fasta_sequences(fasta_file):
@@ -21,21 +21,23 @@ def load_fasta_headers(fasta_file):
 def main():
     args = parse_args()
 
-    query_seqs = load_fasta_sequences(args.fasta)
-    subject_headers = load_fasta_headers(args.database)
 
-    with open(args.blast) as blast_file, open(args.output, "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(["query_id", "subject_id", "peptide_seq", "full_subject_header"])
 
-        for line in blast_file:
-            fields = line.strip().split("\t")
-            if len(fields) < 2:
-                continue
-            query_id, subject_id = fields[0], fields[1]
-            peptide_seq = query_seqs.get(query_id, "NA")
-            full_header = subject_headers.get(subject_id, "NA")
-            writer.writerow([query_id, subject_id, peptide_seq, full_header])
+    # query_seqs = load_fasta_sequences(args.fasta)
+    # subject_headers = load_fasta_headers(args.database)
+    #
+    # with open(args.blast) as blast_file, open(args.output, "w", newline="") as csvfile:
+    #     writer = csv.writer(csvfile)
+    #     writer.writerow(["query_id", "subject_id", "peptide_seq", "full_subject_header"])
+    #
+    #     for line in blast_file:
+    #         fields = line.strip().split("\t")
+    #         if len(fields) < 2:
+    #             continue
+    #         query_id, subject_id = fields[0], fields[1]
+    #         peptide_seq = query_seqs.get(query_id, "NA")
+    #         full_header = subject_headers.get(subject_id, "NA")
+    #         writer.writerow([query_id, subject_id, peptide_seq, full_header])
 
 if __name__ == "__main__":
     main()
