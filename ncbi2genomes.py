@@ -56,7 +56,7 @@ def main():
             cds = ls[35]
             noncoding = ls[36]
             if re.search(args.genera.lower(), organism.lower()):
-                continue
+                print(ls)
             else:
                 if re.search(args.species.lower(), organism.lower()):
                     continue
