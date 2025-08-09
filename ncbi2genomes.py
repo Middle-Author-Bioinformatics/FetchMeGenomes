@@ -2,14 +2,16 @@
 
 import argparse
 import csv
+import re
 from Bio import SeqIO
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Summarize BLAST output with peptide and subject info.")
-    parser.add_argument("-n", "--ncbi", required=True, help="BLAST output file (outfmt 6)")
-    parser.add_argument("-g", "--genera", required=True, help="FASTA file of peptide query sequences")
-    parser.add_argument("-s", "--species", required=True, help="FASTA database used in BLAST (contains subject sequences)")
-    parser.add_argument("-t", "--strain", required=True, help="Output CSV file")
+    parser = argparse.ArgumentParser(description="pull relevant rows from ncbi_assemly_info.tsv file")
+    parser.add_argument("-n", "--ncbi", required=True, help="ncbi")
+    parser.add_argument("-g", "--genera", required=True, help="genera")
+    parser.add_argument("-s", "--species", required=False, help="species", default=".")
+    parser.add_argument("-t", "--strain", required=False, help="strain", default=".")
+    parser.add_argument("-o", "--output", required=True, help="Output CSV file")
     return parser.parse_args()
 
 def load_fasta_sequences(fasta_file):
@@ -21,23 +23,46 @@ def load_fasta_headers(fasta_file):
 def main():
     args = parse_args()
 
-
-
-    # query_seqs = load_fasta_sequences(args.fasta)
-    # subject_headers = load_fasta_headers(args.database)
-    #
-    # with open(args.blast) as blast_file, open(args.output, "w", newline="") as csvfile:
-    #     writer = csv.writer(csvfile)
-    #     writer.writerow(["query_id", "subject_id", "peptide_seq", "full_subject_header"])
-    #
-    #     for line in blast_file:
-    #         fields = line.strip().split("\t")
-    #         if len(fields) < 2:
-    #             continue
-    #         query_id, subject_id = fields[0], fields[1]
-    #         peptide_seq = query_seqs.get(query_id, "NA")
-    #         full_header = subject_headers.get(subject_id, "NA")
-    #         writer.writerow([query_id, subject_id, peptide_seq, full_header])
+    # Open the NCBI assembly info file
+    ncbi = open(args.ncbi, "r")
+    out = open(args.output, "w")
+    out.write("assembly\tbioproject\tbiosample\torganism\tstrain\tassembly_level\tgenome_rep\tseq_release\tasm_name\tasm_submitter\tgbk_accession\texcluded\tgroup\tgenome_size\tperc_gapped\tgc\treplicons\tscaffolds\tcontigs\tannotation_provider\tgenes\tcds\tnoncoding\n")
+    for i in ncbi:
+        if re.match(r'^#', i):
+            pass
+        else:
+            ls = i.rstrip().split("\t")
+            assembly = ls[0]
+            bioproject = ls[1]
+            biosample = ls[2]
+            organism = ls[7]
+            strain = ls[8]
+            assembly_level = ls[11]
+            genome_rep = ls[13]
+            seq_release = ls[14]
+            asm_name = ls[15]
+            asm_submitter = ls[16]
+            gbk_accession = ls[17]
+            excluded = ls[20]
+            group = ls[24]
+            genome_size = ls[25]
+            perc_gapped = (1 - (float(ls[26]) / float(ls[25]))) * 100
+            gc = ls[27]
+            replicons = ls[28]
+            scaffolds = ls[29]
+            contigs = ls[30]
+            annotation_provider = ls[32]
+            genes = ls[34]
+            cds = ls[35]
+            noncoding = ls[36]
+            if re.search(args.genera.lower(), organism.lower()):
+                continue
+            else:
+                if re.search(args.species.lower(), organism.lower()):
+                    continue
+                else:
+                    if re.search(args.strain, i.rstrip()):
+                        out.write(f"{assembly}\t{bioproject}\t{biosample}\t{organism}\t{strain}\t{assembly_level}\t{genome_rep}\t{seq_release}\t{asm_name}\t{asm_submitter}\t{gbk_accession}\t{excluded}\t{group}\t{genome_size}\t{perc_gapped:.2f}\t{gc}\t{replicons}\t{scaffolds}\t{contigs}\t{annotation_provider}\t{genes}\t{cds}\t{noncoding}\n")
 
 if __name__ == "__main__":
     main()
