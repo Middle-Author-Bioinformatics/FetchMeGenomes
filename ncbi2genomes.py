@@ -56,13 +56,14 @@ def main():
             cds = ls[35]
             noncoding = ls[36]
             if re.search(args.genera.lower(), organism.lower()):
-                print(ls)
-            else:
                 if re.search(args.species.lower(), organism.lower()):
-                    continue
-                else:
                     if re.search(args.strain, i.rstrip()):
-                        out.write(f"{assembly}\t{bioproject}\t{biosample}\t{organism}\t{strain}\t{assembly_level}\t{genome_rep}\t{seq_release}\t{asm_name}\t{asm_submitter}\t{gbk_accession}\t{excluded}\t{group}\t{genome_size}\t{perc_gapped:.2f}\t{gc}\t{replicons}\t{scaffolds}\t{contigs}\t{annotation_provider}\t{genes}\t{cds}\t{noncoding}\n")
+                        out.write(
+                            f"{assembly}\t{bioproject}\t{biosample}\t{organism}\t{strain}\t{assembly_level}\t{genome_rep}\t{seq_release}\t{asm_name}\t{asm_submitter}\t{gbk_accession}\t{excluded}\t{group}\t{genome_size}\t{perc_gapped:.2f}\t{gc}\t{replicons}\t{scaffolds}\t{contigs}\t{annotation_provider}\t{genes}\t{cds}\t{noncoding}\n")
+                else:
+                    continue
+            else:
+                continue
 
 if __name__ == "__main__":
     main()
