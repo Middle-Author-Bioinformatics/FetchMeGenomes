@@ -101,7 +101,7 @@ echo python3 /home/ark/MAB/bin/crystalomics-local/send_email.py \
 
     Thanks!
     Your friendly neighborhood bioinformatician 🕸️"
-    
+
 if [ $? -ne 0 ]; then
     echo "Error: send_email.py failed."
 #    conda deactivate
