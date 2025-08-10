@@ -87,6 +87,21 @@ python3 /home/ark/MAB/bin/crystalomics-local/send_email.py \
     Thanks!
     Your friendly neighborhood bioinformatician 🕸️"
 
+echo python3 /home/ark/MAB/bin/crystalomics-local/send_email.py \
+    --sender ark@midauthorbio.com \
+    --recipient ${email} \
+    --subject "Your CIF peptides!" \
+    --body "Hi ${name},
+
+    Your CIF peptide results are available for download using the link below. The link will expire in 24 hours.
+
+    ${url}
+
+    Please reach out to agarber4@asu.com if you have any questions.
+
+    Thanks!
+    Your friendly neighborhood bioinformatician 🕸️"
+    
 if [ $? -ne 0 ]; then
     echo "Error: send_email.py failed."
 #    conda deactivate
