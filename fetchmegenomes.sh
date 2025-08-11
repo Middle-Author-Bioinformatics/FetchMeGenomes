@@ -36,12 +36,33 @@ sleep 5
 # **************************************************************************************************
 # **************************************************************************************************
 
-if [ -z "${species}" ] || [ -z "${strain}" ]; then
-    python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py -n /home/ark/databases/ncbi_assembly_info.tsv -g ${genus} -s ${species} -t ${strain} -o ${OUT}/ncbi_assembly_info.${genus}.tsv
-elif [ -z "${strain}" ]; then
-    python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py -n /home/ark/databases/ncbi_assembly_info.tsv -g ${genus} -s ${species} -o ${OUT}/ncbi_assembly_info.${genus}.${species}.tsv
+if [ -z "$species" ] && [ -z "$strain" ]; then
+    python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py \
+        -n /home/ark/databases/ncbi_assembly_info.tsv \
+        -g "$genus" \
+        -o "${OUT}/ncbi_assembly_info.${genus}.tsv"
+
+elif [ -z "$strain" ]; then
+    python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py \
+        -n /home/ark/databases/ncbi_assembly_info.tsv \
+        -g "$genus" \
+        -s "$species" \
+        -o "${OUT}/ncbi_assembly_info.${genus}.${species}.tsv"
+
+elif [ -z "$species" ]; then
+    python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py \
+        -n /home/ark/databases/ncbi_assembly_info.tsv \
+        -g "$genus" \
+        -t "$strain" \
+        -o "${OUT}/ncbi_assembly_info.${genus}.${strain}.tsv"
+
 else
-    python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py -n /home/ark/databases/ncbi_assembly_info.tsv -g ${genus} -s ${species} -t ${strain} -o ${OUT}/ncbi_assembly_info.${genus}.${species}.${strain}.tsv
+    python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py \
+        -n /home/ark/databases/ncbi_assembly_info.tsv \
+        -g "$genus" \
+        -s "$species" \
+        -t "$strain" \
+        -o "${OUT}/ncbi_assembly_info.${genus}.${species}.${strain}.tsv"
 fi
 
 # **************************************************************************************************
