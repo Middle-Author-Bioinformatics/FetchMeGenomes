@@ -94,14 +94,20 @@ rm -rf ./${ID}-results
 python3 /home/ark/MAB/bin/FetchMeGenomes/send_email.py \
     --sender ark@midauthorbio.com \
     --recipient ${email} \
-    --subject "Your CIF peptides!" \
+    --subject "Your genome assembly info!" \
     --body "Hi ${name},
 
-    Your CIF peptide results are available for download using the link below. The link will expire in 24 hours.
+    The NCBI genome assembly information you requested for the following taxa
+
+    -- Genus: ${genus}
+    -- Species: ${species}
+    -- Strain: ${strain}
+
+    is available for download using the link below. The link will expire in 24 hours.
 
     ${url}
 
-    Please reach out to agarber4@asu.com if you have any questions.
+    Please reach out to ark@midauthorbio.com if you have any questions.
 
     Thanks!
     Your friendly neighborhood bioinformatician 🕸️"
