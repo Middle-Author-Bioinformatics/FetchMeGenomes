@@ -12,6 +12,8 @@ def parse_args():
     parser.add_argument("-s", "--species", required=False, help="species", default=".")
     parser.add_argument("-t", "--strain", required=False, help="strain", default=".")
     parser.add_argument("-o", "--output", required=True, help="Output CSV file")
+    parser.add_argument("-o2", "--output2", required=True, help="Output CSV file")
+
     return parser.parse_args()
 
 def load_fasta_sequences(fasta_file):
@@ -25,6 +27,9 @@ def main():
 
     # Open the NCBI assembly info file
     ncbi = open(args.ncbi, "r")
+
+    out2 = open(args.output2, "w")
+
     out = open(args.output, "w")
     out.write("assembly\tbioproject\tbiosample\torganism\tstrain\tassembly_level\tgenome_rep\tseq_release\tasm_name\tasm_submitter\tgbk_accession\texcluded\tgroup\tgenome_size\tperc_gapped\tgc\treplicons\tscaffolds\tcontigs\tannotation_provider\tgenes\tcds\tnoncoding\n")
     for i in ncbi:
@@ -71,6 +76,9 @@ def main():
                                           f"{excluded}\t{group}\t{genome_size}\t{perc_gapped:.2f}\t{gc}\t"
                                           f"{replicons}\t{scaffolds}\t{contigs}\t"
                                           f"{annotation_provider}\t{genes}\t{cds}\t{noncoding}\n")
+
+                                out2.write(f"{assembly}\n")
+
                             else:
                                 continue
 
@@ -81,6 +89,8 @@ def main():
                                       f"{excluded}\t{group}\t{genome_size}\t{perc_gapped:.2f}\t{gc}\t"
                                       f"{replicons}\t{scaffolds}\t{contigs}\t"
                                       f"{annotation_provider}\t{genes}\t{cds}\t{noncoding}\n")
+
+                            out2.write(f"{assembly}\n")
                     else:
                         continue
                 else:
@@ -90,6 +100,9 @@ def main():
                               f"{excluded}\t{group}\t{genome_size}\t{perc_gapped:.2f}\t{gc}\t"
                               f"{replicons}\t{scaffolds}\t{contigs}\t"
                               f"{annotation_provider}\t{genes}\t{cds}\t{noncoding}\n")
+
+                    out2.write(f"{assembly}\n")
+
             else:
                 continue
 

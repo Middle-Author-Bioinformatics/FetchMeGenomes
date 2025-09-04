@@ -40,21 +40,21 @@ if [ -z "$species" ] && [ -z "$strain" ]; then
     python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py \
         -n /home/ark/databases/ncbi_assembly_info.tsv \
         -g "$genus" \
-        -o "${OUT}/ncbi_assembly_info.${genus}.tsv"
+        -o "${OUT}/ncbi_assembly_info.${genus}.tsv" -o2 "${OUT}/accessions.${genus}.${species}.${strain}.tsv"
 
 elif [ -z "$strain" ]; then
     python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py \
         -n /home/ark/databases/ncbi_assembly_info.tsv \
         -g "$genus" \
         -s "$species" \
-        -o "${OUT}/ncbi_assembly_info.${genus}.${species}.tsv"
+        -o "${OUT}/ncbi_assembly_info.${genus}.${species}.tsv" -o2 "${OUT}/accessions.${genus}.${species}.${strain}.tsv"
 
 elif [ -z "$species" ]; then
     python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py \
         -n /home/ark/databases/ncbi_assembly_info.tsv \
         -g "$genus" \
         -t "$strain" \
-        -o "${OUT}/ncbi_assembly_info.${genus}.${strain}.tsv"
+        -o "${OUT}/ncbi_assembly_info.${genus}.${strain}.tsv" -o2 "${OUT}/accessions.${genus}.${species}.${strain}.tsv"
 
 else
     python /home/ark/MAB/bin/FetchMeGenomes/ncbi2genomes.py \
@@ -62,7 +62,7 @@ else
         -g "$genus" \
         -s "$species" \
         -t "$strain" \
-        -o "${OUT}/ncbi_assembly_info.${genus}.${species}.${strain}.tsv"
+        -o "${OUT}/ncbi_assembly_info.${genus}.${species}.${strain}.tsv" -o2 "${OUT}/accessions.${genus}.${species}.${strain}.tsv"
 fi
 
 # **************************************************************************************************
